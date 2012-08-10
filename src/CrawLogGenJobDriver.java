@@ -37,17 +37,14 @@ public class CrawLogGenJobDriver extends Configured implements Tool {
 		 * JobClient.runJob(conf);
 		 */
 
-		MongoConfigUtil
-				.setOutputURI(getConf(),
-						"mongodb://ds037077.mongolab.com:37077/tt_logs.out");
+		MongoConfigUtil.setOutputURI(getConf(),
+				"mongodb://ds037077.mongolab.com:37077/tt_logs.out");
 
 		Job job = new Job(getConf(), "log parser general");
 		job.setJarByClass(CrawLogGenJobDriver.class);
 
-		FileInputFormat
-				.addInputPaths(
-						job,
-						"s3n://baio-loggly/7868/pub-craw-test/2012/07/31/10.00.raw.gz");
+		FileInputFormat.addInputPaths(job,
+				"s3n://baio-loggly/7868/pub-craw-test/2012/07/31/10.00.raw.gz");
 
 		job.setMapperClass(LogMapper.class);
 		job.setReducerClass(LogReducer.class);
