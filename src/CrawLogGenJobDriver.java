@@ -13,39 +13,22 @@ public class CrawLogGenJobDriver extends Configured implements Tool {
 
 	@Override
 	public int run(String[] args) throws Exception {
-		if (args.length != 2) {
-			System.err.printf("Usage: %s [generic options] <input> <output>\n",
+						
+		if (args.length != 3) {
+			System.err.printf("Usage: %s [generic options] <input> <output> <craw_id>\n",
 					getClass().getSimpleName());
 			ToolRunner.printGenericCommandUsage(System.err);
 			return -1;
 		}
-
-		/*
-		 * JobConf conf = new JobConf(getConf(), getClass());
-		 * conf.setJobName("Max temperature");
-		 * 
-		 * 
-		 * FileInputFormat.addInputPath(conf, new Path(args[0]));
-		 * FileOutputFormat.setOutputPath(conf, new Path(args[1]));
-		 * 
-		 * conf.setOutputKeyClass(Text.class);
-		 * conf.setOutputValueClass(IntWritable.class);
-		 * 
-		 * conf.setMapperClass(MaxTemperatureMapper.class);
-		 * conf.setCombinerClass(MaxTemperatureReducer.class);
-		 * conf.setReducerClass(MaxTemperatureReducer.class);
-		 * JobClient.runJob(conf);
-		 */
-
-		MongoConfigUtil.setOutputURI(getConf(),
-				"mongodb://ds037077.mongolab.com:37077/tt_logs.out");
-
+		
+		MongoConfigUtil.setOutputURI(getConf(), args[1]);		
+		getConf().set("craw_id", args[2]);
+		
 		Job job = new Job(getConf(), "log parser general");
 		job.setJarByClass(CrawLogGenJobDriver.class);
 
-		FileInputFormat.addInputPaths(job,
-				"s3n://baio-loggly/7868/pub-craw-test/2012/07/31/10.00.raw.gz");
-
+		FileInputFormat.addInputPaths(job,args[0]);
+				
 		job.setMapperClass(LogMapper.class);
 		job.setReducerClass(LogReducer.class);
 
@@ -57,6 +40,7 @@ public class CrawLogGenJobDriver extends Configured implements Tool {
 		job.setOutputFormatClass(MongoOutputFormat.class);
 		job.setOutputKeyClass(BSONWritable.class);
 		job.setOutputValueClass(BSONWritable.class);
+		
 
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
 

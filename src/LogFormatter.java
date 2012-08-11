@@ -7,7 +7,7 @@ import org.bson.BSONObject;
 import org.bson.BasicBSONObject;
 
 class LogFormatter {
-
+	
 	class FormatResult {
 		String id = null;
 		String crawId = null;
@@ -28,7 +28,7 @@ class LogFormatter {
 	private Date parseDate(String DateStr) throws java.text.ParseException {
 		if (DateStr != null) {
 			java.text.DateFormat dateFormat = new java.text.SimpleDateFormat(
-					"YYY-MM-DD'T'HH:mm:ss.SSS'Z'");
+					"yyyy-MM-DD'T'HH:mm:ss.SSS'Z'");
 
 			return dateFormat.parse(DateStr);
 		} else {
@@ -58,8 +58,8 @@ class LogFormatter {
 				result.complete = parseDate(vals[1]);
 			} else if (stp.equals("request")) {
 				result.steps.add("rqeuest");
-			} else if (stp.equals("respond")) {
-				result.steps.add("respond");
+			} else if (stp.equals("response")) {
+				result.steps.add("response");
 			} else if (stp.equals("found")) {
 				result.steps.add("found");
 				result.found = Integer.parseInt(vals[1]);
@@ -73,7 +73,7 @@ class LogFormatter {
 		}
 
 		result.id = Key.toString();
-
+			
 		return result;
 
 	}
@@ -83,6 +83,7 @@ class LogFormatter {
 
 		BSONObject bsonObject = new BasicBSONObject();
 		bsonObject.put("_id", FormatResult.id);
+		bsonObject.put("craw", FormatResult.crawId);
 		bsonObject.put("steps", FormatResult.steps.toArray());
 		bsonObject.put("start", FormatResult.start);
 		bsonObject.put("complete", FormatResult.complete);
@@ -99,6 +100,7 @@ class LogFormatter {
 
 	BSONObject AsBSON(Text Key, Iterable<Text> values)
 			throws java.text.ParseException {
+				
 		return AsBSON(Format(Key, values));
 	}
 

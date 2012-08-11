@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<configuration>
+ <property>
+
+    <name>fs.s3n.awsAccessKeyId</name>
+
+    <value>XXX</value>
+
+  </property>
+
+  <property>
+
+    <name>fs.s3n.awsSecretAccessKey</name>
+
+    <value>XXX</value>
+
+  </property>  
+</configuration>
+

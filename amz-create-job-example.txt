@@ -1,0 +1,11 @@
+--single job
+
+./elastic-mapreduce --create --name "craw-log-gen" --verbose --enable-debugging --debug --log-uri s3n://uri  
+--jar s3n://baio-emr/craw-log-gen.jar s3n://uri/craw-log-gen.jar --arg s3n://inputfolder-uri/** --arg mongodb://login:password@output-collection-uri
+
+--------------------------------------------------
+
+-- job with steps
+
+./elastic-mapreduce --create --alive --verbose --enable-debugging --debug --name "craw-log-gen"  --log-uri s3n://uri 
+./elastic-mapreduce -j j-TITYTW567FD8 --jar s3n://uri/craw-log-gen.jar --arg s3n://input-folder-ui/** --arg mongodb://login:password@output-collection-uri

@@ -11,6 +11,8 @@ public class LogReducer extends Reducer<Text, Text, BSONObject, BSONObject> {
 	public void reduce(Text key, Iterable<Text> values, Context context)
 			throws IOException, InterruptedException {
 
+		String crawId = (String) context.getConfiguration().get("craw_id");
+				
 		BSONObject bson = null;
 
 		try {
@@ -18,7 +20,7 @@ public class LogReducer extends Reducer<Text, Text, BSONObject, BSONObject> {
 		} catch (java.text.ParseException e) {
 		}
 
-		if (bson != null) {
+		if (bson != null && crawId.equals(bson.get("craw"))) {
 			context.write(bson, bson);
 		}
 	}

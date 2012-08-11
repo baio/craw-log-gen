@@ -26,4 +26,3 @@ local.properties
 .buildpath
 
 conf/hadoop.xml
-amz-create-job.txt
