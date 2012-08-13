@@ -20,7 +20,7 @@ public class LogReducer extends Reducer<Text, Text, BSONObject, BSONObject> {
 		} catch (java.text.ParseException e) {
 		}
 
-		if (bson != null && crawId.equals(bson.get("craw"))) {
+		if (bson != null && (crawId == null || crawId.equals(bson.get("craw")))) {
 			context.write(bson, bson);
 		}
 	}

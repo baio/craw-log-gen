@@ -28,7 +28,7 @@ class LogFormatter {
 	private Date parseDate(String DateStr) throws java.text.ParseException {
 		if (DateStr != null) {
 			java.text.DateFormat dateFormat = new java.text.SimpleDateFormat(
-					"yyyy-MM-DD'T'HH:mm:ss.SSS'Z'");
+					"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
 			return dateFormat.parse(DateStr);
 		} else {

@@ -14,15 +14,18 @@ public class CrawLogGenJobDriver extends Configured implements Tool {
 	@Override
 	public int run(String[] args) throws Exception {
 						
-		if (args.length != 3) {
-			System.err.printf("Usage: %s [generic options] <input> <output> <craw_id>\n",
+		if (args.length != 2 && args.length != 3) {
+			System.err.printf("Usage: %s [generic options] <input> <output> [craw_id]\n",
 					getClass().getSimpleName());
 			ToolRunner.printGenericCommandUsage(System.err);
 			return -1;
 		}
 		
-		MongoConfigUtil.setOutputURI(getConf(), args[1]);		
-		getConf().set("craw_id", args[2]);
+		MongoConfigUtil.setOutputURI(getConf(), args[1]);
+		if (args.length == 3)
+		{
+			getConf().set("craw_id", args[2]);
+		}
 		
 		Job job = new Job(getConf(), "log parser general");
 		job.setJarByClass(CrawLogGenJobDriver.class);
